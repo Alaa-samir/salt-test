@@ -1,6 +1,10 @@
 base:
-  '*' :
-    - java
+  'os_family:RedHat':
+    - match: grain
+    - java3
+  'os_family:Debian':
+    - match: grain
+    - java2
 
   'roles:*db*':
     - match: grain
@@ -13,4 +17,3 @@ base:
   'roles:*public*':
     - match: grain
     - nginx
-

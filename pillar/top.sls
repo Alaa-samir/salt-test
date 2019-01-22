@@ -1,4 +1,8 @@
 base:
+  '*':
+    - users.sudousers
+    - users.removedusers
+
   'os_family:RedHat':
     - match: grain
     - default-redhat
@@ -6,12 +10,19 @@ base:
     - match: grain
     - default-debian
 
-  'roles:dev':
+  'roles:*db*':
     - match: grain
-    - dev-confg
-  'roles:stage':
+    - users.dbusers
+  'roles:*infra*':
     - match: grain
-    - stage-confg
-  'roles:prod':
-    - match: grain
-    - prod-confg
+    - users.infrausers
+#'roles:dev':
+#    - match: grain
+#    - dev-confg
+#  'roles:stage':
+#    - match: grain
+#    - stage-confg
+#  'roles:prod':
+#    - match: grain
+#    - prod-confg
+#

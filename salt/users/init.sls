@@ -2,28 +2,30 @@
 {% for user, args in pillar.get('users', {}).iteritems() %}
 normal {{user}}:
   user.present:
+    - name: {{ user }}
     - fullname: {{ args['fullname'] }}
-    - home: /home/{{ usr }}
+    - home: /home/{{ user }}
 
 
 {{user}}_key:
   ssh_auth.present:
     - user: {{user}}
-    - names: {{ key }}
+    - names: {{ args['ssh-keys']}}
 {% endfor %}
 
 #add sudo users
 {% for user, args in pillar.get('sudousers', {}).iteritems() %}
 sudo {{user}}:
   user.present:
+    - name: {{ user }}
     - fullname: {{ args['fullname'] }}
-    - home: /home/{{ usr }}
+    - home: /home/{{ user }}
 
 
 sudo {{user}}_key:
   ssh_auth.present:
     - user: root
-    - names: {{ key }}
+    - names: {{ args['ssh-keys']}}
 {% endfor %}
 
 #remove users
@@ -35,12 +37,10 @@ remove {{user}}:
 {{user}}_root_key:
   ssh_auth.absent:
     - user: root
-    - names:
-      - {{ key }}
+    - names: {{ args['ssh-keys']}}
 
 {{user}}_key:
   ssh_auth.absent:
     - user: {{user}}
-    - names:
-      - {{ key }}
+    - names: {{ args['ssh-keys']}}
 {% endfor %}

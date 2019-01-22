@@ -20,11 +20,12 @@ sudo {{user}}:
     - name: {{ user }}
     - fullname: {{ args['fullname'] }}
     - home: /home/{{ user }}
-
+    - groups:
+        - sudo
 
 sudo {{user}}_key:
   ssh_auth.present:
-    - user: root
+    - user: {{ user }}
     - name: {{ args['ssh-keys']}}
 {% endfor %}
 

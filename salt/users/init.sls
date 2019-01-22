@@ -10,7 +10,7 @@ normal {{user}}:
 {{user}}_key:
   ssh_auth.present:
     - user: {{user}}
-    - names: {{ args['ssh-keys']}}
+    - name: {{ args['ssh-keys']}}
 {% endfor %}
 
 #add sudo users
@@ -25,7 +25,7 @@ sudo {{user}}:
 sudo {{user}}_key:
   ssh_auth.present:
     - user: root
-    - names: {{ args['ssh-keys']}}
+    - name: {{ args['ssh-keys']}}
 {% endfor %}
 
 #remove users
@@ -37,10 +37,16 @@ remove {{user}}:
 {{user}}_root_key:
   ssh_auth.absent:
     - user: root
-    - names: {{ args['ssh-keys']}}
+    - name: {{ args['ssh-keys']}}
 
 {{user}}_key:
   ssh_auth.absent:
     - user: {{user}}
-    - names: {{ args['ssh-keys']}}
+    - name: {{ args['ssh-keys']}}
 {% endfor %}
+
+/etc/sudoers.d/sudonopasswd:
+  file.managed:
+    - source: salt://users/files/sudoers.d/sudonopasswd
+    - user: root
+    - mode: 440
